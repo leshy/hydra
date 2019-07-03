@@ -15,25 +15,40 @@
  <meta name="twitter:image" content="https://cdn.glitch.com/9c3a06ab-0731-42ca-a1a3-3a249825d08f%2FScreen%20Shot%202018-06-24%20at%204.47.49%20PM.png?1531889983803">
  <meta name="twitter:card" content="summary_large_image">
  <link href="https://fonts.googleapis.com/css?family=Chivo:300,400,700" rel="stylesheet">
+ <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
   <link rel="stylesheet" href="./css/codemirror.css">
   <link rel="stylesheet" href="./css/tomorrow-night-eighties.css">
+  <!-- <link rel="stylesheet" href="./css/night.css"> -->
   <link rel="stylesheet" href="./css/show-hint.css">
   <link rel="stylesheet" href="./css/style.css">
   <link rel="stylesheet" href="./css/modal.css">
   <link rel="shortcut icon" type="image/png" href="https://cdn.glitch.com/597fe374-3d18-46a5-b99c-ceff1f8ffd79%2Ffavicon.png?1530891352785"/>
+  <style>
+    .CodeMirror {
+        font-family: 'Ubuntu Mono', monospace !important;
+    }
+  </style>
+
 
 </head>
 <body>
   <div id="hydra-ui">
+    
     <form action="" id="code-holder" name="code-holder">
       <textarea id="code" name="code"></textarea>
     </form>
+    <canvas id="lc" style="display: none;">
+    </canvas>
+    
+    <div id="livecodelab-backgroundDiv"></div>
 
     <canvas id="hydra-canvas">
     </canvas>
     <canvas id="audio-canvas">
     </canvas>
+                
   </div>
   <div id="info-container" class="hidden">
     <div id="modal">
