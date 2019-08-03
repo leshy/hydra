@@ -1,4 +1,7 @@
 const PatchBay = require('./src/pb-live.js')
+const midi = require('./src/midi.js')
+const stats = require('./src/stats')
+
 const HydraSynth = require('hydra-synth')
 const Editor = require('./src/editor.js')
 const loop = require('raf-loop')
@@ -52,22 +55,24 @@ function init () {
   var hydra = new HydraSynth({ pb: pb, canvas: canvas, autoLoop: false })
   var editor = new Editor()
   var menu = new Menu({ editor: editor, hydra: hydra})
-
+  
+  window.a = a
+  s0.init({ src: document.getElementById('lc'), dynamic: false })
+  s1.init({ src: document.getElementById('pic'), dynamic: true })
+  
+  
   var initCode = `
-window.a = a
 a.show()
 a.setSmooth(0.9)
 
-s0.init({ src: document.getElementById('lc'), dynamic: false })
-s1.initCam(1)
-s2.initCam(2)
+//s1.initCam(1)
+//s2.initCam(2)
 
-lc.updateCode(\`
-noFill
-stroke white
-box
-\`)
-
+lc.eval(() => {
+  noFill()
+  stroke(white)
+  rotate(box)
+})
 
 src(s0).out(o0)
 
@@ -106,8 +111,14 @@ src(s0).out(o0)
     room: 'iclc'
   })
 
+  var cc = midi()
+  window.cc = cc
+
+  const statsInstance = stats()
   var engine = loop(function(dt) {
+    statsInstance.begin()
     hydra.tick(dt)
+    statsInstance.end()
   }).start()
 
 }

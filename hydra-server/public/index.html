@@ -29,20 +29,28 @@
     .CodeMirror {
         font-family: 'Ubuntu Mono', monospace !important;
     }
+    .statsJs {
+        right: 0;
+        position: absolute;
+        top: 0;
+    }
   </style>
 
 
 </head>
 <body>
+  <div id="statsJs"></div>
   <div id="hydra-ui">
     
     <form action="" id="code-holder" name="code-holder">
       <textarea id="code" name="code"></textarea>
     </form>
+
     <canvas id="lc" style="display: none;">
     </canvas>
     
     <div id="livecodelab-backgroundDiv"></div>
+    <img id="pic" src="/img/david.png" style="display: none;"/>
 
     <canvas id="hydra-canvas">
     </canvas>
