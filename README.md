@@ -13,3 +13,7 @@
 
 * removed gallery
 
+
+![david](https://github.com/leshy/hydra/blob/master/samples/david.jpg?raw=true)
+
+![threejs](https://github.com/leshy/hydra/blob/master/samples/threejs.jpg?raw=true)
