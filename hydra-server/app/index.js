@@ -48,8 +48,6 @@ function init () {
   canvas.height = window.innerHeight
   canvas.style.width = '100%'
   canvas.style.height = '100%'
-
-
   
   var pb = new PatchBay()
   var hydra = new HydraSynth({ pb: pb, canvas: canvas, autoLoop: false })
@@ -57,6 +55,7 @@ function init () {
   var menu = new Menu({ editor: editor, hydra: hydra})
   
   window.a = a
+  
   s0.init({ src: document.getElementById('lc'), dynamic: false })
   s1.init({ src: document.getElementById('pic'), dynamic: true })
   
