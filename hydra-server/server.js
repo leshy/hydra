@@ -1,11 +1,12 @@
 // load environmental variables contained in .env file
 require('dotenv').config()
-
+const _ = require('lodash')
 const fs = require('fs')
 const express = require('express')
 const app = express()
 const browserify = require('browserify-middleware')
 const path = require('path')
+
 // const configureSSL = require('./configure-ssl.js')
 
 var http = require('http')
@@ -22,7 +23,7 @@ if(process.env.TWILIO_SID) {
 }
 
 var io = require('socket.io')(server)
-require('./twitter-gallery.js')(app)
+// require('./twitter-gallery.js')(app)
 
 // crear un servidor en puerto 8000
 server.listen(8000, function () {
@@ -30,6 +31,12 @@ server.listen(8000, function () {
   // console.log('servidor disponible en https://'+myip.getLocalIP4()+':8000')
   console.log('server available at https://localhost:8000')
 })
+
+fs.watchFile('./code.js', { interval: 100  }, (curr, prev) => {
+  console.log('emit code')
+  fs.readFile('./code.js', (err, data) => io.sockets.emit('code', String(data)))
+});
+
 
 // look up uuid by entiring socket id
 var userFromSocket = {}

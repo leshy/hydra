@@ -14,6 +14,7 @@ var PBLive = function () {
 
   this.loadFromStorage()
 }
+
 // inherits from PatchBay module
 inherits(PBLive, PatchBay)
 
@@ -45,6 +46,7 @@ PBLive.prototype.init = function (stream, opts) {
     }
     console.log('connected to server ' + this.settings.server + ' with name ' + this.settings.id)
   })
+  
   // received a broadcast
   this.on('broadcast', this._processBroadcast.bind(this))
   this.on('new peer', this.handleNewPeer.bind(this))
@@ -129,5 +131,6 @@ PBLive.prototype._processBroadcast = function (data) {
     }
   }
 }
+
 // PBExtended.prototype.
 module.exports = PBLive

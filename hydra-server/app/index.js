@@ -1,9 +1,8 @@
 const PatchBay = require('./src/pb-live.js')
 const midi = require('./src/midi.js')
 const stats = require('./src/stats')
-
+const editor = require('./src/editor.js')
 const HydraSynth = require('hydra-synth')
-const Editor = require('./src/editor.js')
 const loop = require('raf-loop')
 const P5  = require('./src/p5-wrapper.js')
 const Gallery  = require('./src/gallery.js')
@@ -16,7 +15,7 @@ const Pulse           = require('../livecodelab/src/js/pulse')
 const WebAudioAPI     = require('../livecodelab/src/coffee/sound/webAudioApi')
 const lodash = require('lodash')
 const $ = require('jquery')
-
+const enableEditor = false
 lodash.extend(window, lodash)
 
 function init () {
@@ -42,6 +41,7 @@ function init () {
     liveCodeLabCore
   )
 
+
   
   var canvas = document.getElementById('hydra-canvas')
   canvas.width = window.innerWidth
@@ -50,14 +50,7 @@ function init () {
   canvas.style.height = '100%'
   
   var pb = new PatchBay()
-  var hydra = new HydraSynth({ pb: pb, canvas: canvas, autoLoop: false })
-  var editor = new Editor()
-  var menu = new Menu({ editor: editor, hydra: hydra})
-  
-  window.a = a
-  
-  s0.init({ src: document.getElementById('lc'), dynamic: false })
-  s1.init({ src: document.getElementById('pic'), dynamic: true })
+  var hydra = new HydraSynth({ numSources: 8, pb: pb, canvas: canvas, autoLoop: false })
   
   
   var initCode = `
@@ -76,22 +69,43 @@ lc.eval(() => {
 src(s0).out(o0)
 
 `
-  editor.cm.setValue(initCode)
-  // editor.evalAll()
-  // // get initial code to fill gallery
-  var sketches = new Gallery(function(code, sketchFromURL) {
-    // editor.saveSketch = (code) => {
-    //   sketches.saveSketch(code)
-    // }
-    // editor.shareSketch = menu.shareSketch.bind(menu)
-    // if a sketch was found based on the URL parameters, dont show intro window
-    // if(sketchFromURL) {
-    menu.closeModal()
-    // } else {
-    //   menu.openModal()
-    // }
+
+  if (enableEditor) {
+    const Editor = require('./src/editor.js')
+    var editor = new Editor()
+    editor.cm.setValue(initCode)
+    // var menu = new Menu({ editor: editor, hydra: hydra})
+  }
+  window.a = a
+  
+  //  https://github.com/regl-project/regl/blob/master/API.md#texture-constructor  
+  s0.init({ src: document.getElementById('lc'), dynamic: false })
+//  s1.init({ src: document.getElementById('pic'), dynamic: true })
+
+  
+  pb.on('code', (code) => {
+    console.log("EVAL", code)
+    console.log(eval(code))
   })
-  menu.sketches = sketches
+
+  if (enableEditor) {
+    editor.evalAll()
+  }
+  // // // get initial code to fill gallery
+  // var sketches = new Gallery(function(code, sketchFromURL) {
+  //   // editor.saveSketch = (code) => {
+  //   //   sketches.saveSketch(code)
+  //   // }
+  //   // editor.shareSketch = menu.shareSketch.bind(menu)
+  //   // if a sketch was found based on the URL parameters, dont show intro window
+  //   // if(sketchFromURL) {
+  //   menu.closeModal()
+  //   // } else {
+  //   //   menu.openModal()
+  //   // }
+  // })
+  
+  // menu.sketches = sketches
 
   // define extra functions (eventually should be added to hydra-synth?)
 
@@ -103,7 +117,6 @@ src(s0).out(o0)
     solid().out(o3)
     render(o0)
   }
-
 
   pb.init(hydra.captureStream, {
     server: window.location.origin,

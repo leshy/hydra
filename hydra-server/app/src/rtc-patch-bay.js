@@ -43,6 +43,7 @@ var PatchBay = function (options) {
   this.signaller.on('message', this._handleMessage.bind(this))
   // Received message via websockets to all peers in room
   this.signaller.on('broadcast', this._receivedBroadcast.bind(this))
+  this.signaller.on('code', this._receivedCode.bind(this))
 
   // emit 'join' event to signalling server
   this.signaller.emit('join', this._room, {uuid: this.id})
@@ -199,6 +200,11 @@ PatchBay.prototype._handleSignal = function (data) {
 PatchBay.prototype._receivedBroadcast = function(data) {
   //console.log("RECEIVED BROADCAST", data)
   this.emit('broadcast', data)
+}
+
+PatchBay.prototype._receivedCode = function(data) {
+  //console.log("RECEIVED BROADCAST", data)
+  this.emit('code', data)
 }
 
 //sends via signalling server
